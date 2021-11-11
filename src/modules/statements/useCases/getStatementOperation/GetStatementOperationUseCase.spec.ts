@@ -1,9 +1,9 @@
+import { AppError } from '../../../../shared/errors/AppError';
 import { InMemoryUsersRepository } from '../../../users/repositories/in-memory/InMemoryUsersRepository';
 import { CreateUserUseCase } from '../../../users/useCases/createUser/CreateUserUseCase';
 import { Statement } from '../../entities/Statement';
 import { InMemoryStatementsRepository } from '../../repositories/in-memory/InMemoryStatementsRepository';
 import { CreateStatementUseCase } from '../createStatement/CreateStatementUseCase';
-import { GetStatementOperationError } from './GetStatementOperationError';
 import { GetStatementOperationUseCase } from './GetStatementOperationUseCase';
 
 enum OperationType {
@@ -62,7 +62,7 @@ describe("Get statement operation", () => {
         user_id: user.id as string,
         statement_id: 'non-existent id',
       });
-    }).rejects.toBeInstanceOf(GetStatementOperationError.StatementNotFound);
+    }).rejects.toBeInstanceOf(AppError);
   });
 
   it("Should not be able to return statement operation info for a non-existent user", () => {
@@ -84,6 +84,6 @@ describe("Get statement operation", () => {
         user_id: 'non-existent user',
         statement_id: deposit.id as string,
       });
-    }).rejects.toBeInstanceOf(GetStatementOperationError.UserNotFound);
+    }).rejects.toBeInstanceOf(AppError);
   });
 })

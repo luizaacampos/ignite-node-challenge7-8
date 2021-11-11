@@ -1,9 +1,9 @@
+import { AppError } from '../../../../shared/errors/AppError';
 import { User } from '../../../users/entities/User';
 import { InMemoryUsersRepository } from '../../../users/repositories/in-memory/InMemoryUsersRepository';
 import { CreateUserUseCase } from '../../../users/useCases/createUser/CreateUserUseCase';
 import { Statement } from '../../entities/Statement';
 import { InMemoryStatementsRepository } from '../../repositories/in-memory/InMemoryStatementsRepository';
-import { CreateStatementError } from './CreateStatementError';
 import { CreateStatementUseCase } from './CreateStatementUseCase';
 
 enum OperationType {
@@ -76,7 +76,7 @@ describe("Create statement", () => {
         amount: 500,
         description: "test deposit"
       });
-    }).rejects.toBeInstanceOf(CreateStatementError.UserNotFound);
+    }).rejects.toBeInstanceOf(AppError);
   });
 
   it("Should not be able to create a withdraw for a non-existent user", () => {
@@ -87,7 +87,7 @@ describe("Create statement", () => {
         amount: 500,
         description: "test withdraw"
       });
-    }).rejects.toBeInstanceOf(CreateStatementError.UserNotFound);
+    }).rejects.toBeInstanceOf(AppError);
   });
 
   it("Should not be able to create a withdraw when user has insufficient funds", () => {
@@ -111,6 +111,6 @@ describe("Create statement", () => {
         amount: 500,
         description: "test withdraw"
       });
-    }).rejects.toBeInstanceOf(CreateStatementError.InsufficientFunds);
+    }).rejects.toBeInstanceOf(AppError);
   });
 });
